@@ -26,5 +26,6 @@ yarn-error.log*
 .eslintcache
 dist
 .vercel
+.zip
 package-lock.json
 
