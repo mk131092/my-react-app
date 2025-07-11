@@ -1,0 +1,44 @@
+name: UAT Innpath FEReact
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # or your preferred version
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build React app
+        run: npm run build
+        
+  #    - name: Copy via SSH
+  #      uses: appleboy/scp-action@v0.1.7
+  #      with:
+  #        source: "dist/*"
+  #        target: "/home/ubuntu/project/FEReact/"
+  #        host: ${{ secrets.REMOTE_HOST_UAT_INNOPATH }}
+  #        port: 22
+  #        username: ${{ secrets.REMOTE_USER_UAT_INNOPATH }}
+  #        password: ${{ secrets.REMOTE_PASSWORD_UAT_INNOPATH }}
+  #        strip_components: 1
+  #        overwrite: true
+      - name: Zip the repo contents
+        run: |
+          zip -r elabpro-fe.zip dist/* -x ".git/*" ".github/*"
+      - name: Upload zip as artifact
+        uses: actions/upload-artifact@v4
+        with:
+            name: elabpro-fe-zip
+            path: elabpro-fe.zip

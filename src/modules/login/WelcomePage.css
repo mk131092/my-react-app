@@ -1,0 +1,133 @@
+/* Global reset and background */
+ .welcomemain-div {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+} 
+ 
+
+
+/* Main container styling */
+.welcome-maincontainercls {
+  width: 80%;
+  max-width: 1200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+  padding: 20px;
+  /* background-color: #FFFFFF; */
+  /* box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); */
+  border-radius: 8px;
+  margin-top: 50px;
+  z-index: 1;
+}
+
+/* Welcome content styling */
+.welcome-content {
+  width: 60%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main heading styling */
+.welcome-heading {
+  font-size: 2.5rem !important;
+  font-weight: bold !important;
+  /* color: #58C7C7; */
+  margin: 0;
+}
+
+/* Subheading styling */
+.welcome-subheading {
+  font-size: 1.6rem !important;
+  color: #58C7C7;
+  font-weight: 600;
+  margin: 10px 0 20px 0;
+}
+
+/* Text heading for additional details */
+.welcome-textHeading {
+  font-size: 1.6rem !important;
+  color: #555555;
+  margin: 8px 0;
+  font-weight: bold;
+}
+
+/* Styling for highlighted text in spans */
+.welcome-textdisplay {
+  font-weight: bold;
+  font-size: 1.3rem !important;
+  color: #58C7C7;
+}
+
+/* Image container styling */
+.welcome-img {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.welcome-img img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+ 
+/* Responsive styling for larger screens */
+@media (min-width: 1200px) {
+  .welcome-heading {
+    font-size: 2.8rem;
+  }
+
+  .welcome-subheading {
+    font-size: 1.5rem;
+  }
+
+  .welcome-textHeading {
+    font-size: 1.2rem;
+  }
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 750px) {
+  .welcome-maincontainercls {
+    flex-direction: column;
+    padding: 15px;
+  }
+
+  .welcome-content {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .welcome-heading {
+    font-size: 1.8rem;
+  }
+
+  .welcome-subheading {
+    font-size: 1.1rem;
+  }
+
+  .welcome-textHeading {
+    font-size: 0.95rem;
+  }
+
+  .welcome-img {
+    width: 100%;
+    padding: 10px;
+  }
+}
