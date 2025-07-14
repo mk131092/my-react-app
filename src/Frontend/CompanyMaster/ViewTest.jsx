@@ -56,6 +56,7 @@ const ViewTest = ({ show, setShow,id }) => {
         }}
       >
         <div className="row">
+          xxx
           {loading && <Loading />}
           {!loading && (
             <Tables>

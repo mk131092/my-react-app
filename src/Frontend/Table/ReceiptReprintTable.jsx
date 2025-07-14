@@ -332,6 +332,8 @@ const ReceiptReprintTable = ({
 
                           {col.header === "Visit No" &&
                             data?.LedgerTransactionNo}
+                          {col.header === "Apex Billno" &&
+                            data?.Apexbillnumber}
                           {col.header === "UHID" && data?.PatientCode}
                           {col.header === "Patient Name" && (
                             <div>
