@@ -4597,7 +4597,7 @@ const PatientRegistration = () => {
                       </ul>
                     )}
                   </div>
-                  <div style={{ width: "10%" }}>
+                  {/* <div style={{ width: "10%" }}>
                     <Tooltip label={t("Add Referred Doctor")}>
                       <button
                         type="button"
@@ -4607,7 +4607,7 @@ const PatientRegistration = () => {
                         <i className="fa fa-plus-circle fa-sm new_record_pluse"></i>
                       </button>
                     </Tooltip>
-                  </div>
+                  </div> */}
                 </div>
 
                 {!err?.DoctorName &&
@@ -4915,9 +4915,10 @@ const PatientRegistration = () => {
                 )}
               </div>
             </div>
-
+            
+            {/* Display none as Sachin Sir Demand */}
             <div className="row mb-1 pt-1">
-              <div className="col-sm-2 col-6">
+              <div className="col-sm-2 col-6 d-none">
                 <SelectBox
                   options={[{ label: "Select", value: "" }, ...proEmplyee]}
                   name="ProEmployee"
@@ -5097,11 +5098,9 @@ const PatientRegistration = () => {
                   </button>
                 </div>
               )}
-              <div
-                className={
-                  state?.Gender === "Female" ? "col-sm-1 col-6" : "col-sm-1"
-                }
-              >
+              
+              {/* Display none as Sachin Sir Demand */}
+              <div className={`d-none ${state?.Gender === "Female" ? "col-sm-1 col-6" : "col-sm-1"}`}>
                 <button
                   className="text-white btn-block rounded p-1"
                   type="button"

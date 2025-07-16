@@ -36,6 +36,7 @@ const CreateDoctorMaster = () => {
     isActive: 1,
     SecondReferDoctor: 0,
     ProEmployee: "",
+    DoctorCode:'',
   });
 
   const getProEmployee = () => {
@@ -185,6 +186,22 @@ const CreateDoctorMaster = () => {
               type="text"
               className="required-fields"
               placeholder=" "
+              lable="Doctor Code"
+              id="DoctorCode"
+              name="DoctorCode"
+              max={75}
+              value={values?.DoctorCode}
+              onChange={handleChange}
+            />
+            {errors?.Name && touched?.Name && (
+              <div className="error-message">{errors?.Name}</div>
+            )}
+          </div>
+          <div className="col-sm-2">
+            <Input
+              type="text"
+              className="required-fields"
+              placeholder=" "
               lable="Doctor Name"
               id="DoctorName"
               name="Name"
@@ -236,6 +253,8 @@ const CreateDoctorMaster = () => {
               onChange={handleChange}
             />
           </div>
+        </div>
+        <div className="row pt-1 pl-2 pr-2">
           <div className="col-sm-2">
             <Input
               className="required-fields"
@@ -252,8 +271,6 @@ const CreateDoctorMaster = () => {
               <div className="error-message">{errors?.Mobile}</div>
             )}
           </div>
-        </div>
-        <div className="row pt-1 pl-2 pr-2">
           <div className="col-sm-2">
             <SelectBox
               lable="Specialization"
