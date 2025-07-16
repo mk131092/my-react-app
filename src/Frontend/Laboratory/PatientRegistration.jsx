@@ -4332,7 +4332,6 @@ const PatientRegistration = () => {
                   <div className="error-message">{t(errors?.PatientCode)}</div>
                 )}
               </div>
-
               <div className="col-sm-2 col-6">
                 <div className="p-inputgroup d-flex">
                   <div style={{ width: "87%" }}>

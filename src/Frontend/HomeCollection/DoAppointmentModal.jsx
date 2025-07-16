@@ -543,16 +543,8 @@ const DoAppointmentModal = ({
         })
         .then((res) => {
           setLoad(false);
-          console.log(res?.data?.message);
-
-          const latestResponse = res?.data?.data;
-          console.log({ latestResponse });
-          console.log(
-            "ledgertransactionID:",
-            latestResponse?.ledgertransactionID
-          );
-
-          getReceipt(latestResponse?.ledgertransactionID);
+          // const latestResponse = res?.data?.data;
+          // getReceipt(latestResponse?.ledgertransactionID);
           toast.success("Booking Successfully");
           handleAppointment();
           callhandleOnRouteValue(routeValueData);
@@ -1666,7 +1658,8 @@ const DoAppointmentModal = ({
                         id="PaidAmt"
                         value={appointData?.PaidAmt}
                         onChange={handleChange}
-                        disabled={tableData.length === 0}
+                        // disabled={tableData.length === 0}
+                        disabled={true}
                         onBlur={handlePaidAmountBlur}
                         // className={"required-fields"}
                       />
