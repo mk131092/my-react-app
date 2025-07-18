@@ -236,7 +236,6 @@ const ReceiptReprintTable = ({
       });
     }
   };
-
   const handlePatientImage = async (guid, index) => {
     console.log(guid);
     if (!guid) {
