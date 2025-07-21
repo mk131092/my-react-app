@@ -1658,8 +1658,8 @@ const DoAppointmentModal = ({
                         id="PaidAmt"
                         value={appointData?.PaidAmt}
                         onChange={handleChange}
-                        // disabled={tableData.length === 0}
-                        disabled={true}
+                        disabled={tableData.length === 0}
+                        // disabled={true}
                         onBlur={handlePaidAmountBlur}
                         // className={"required-fields"}
                       />
