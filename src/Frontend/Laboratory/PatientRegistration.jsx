@@ -177,6 +177,7 @@ const PatientRegistration = () => {
     load: false,
   });
 
+
   const [Category, setCategory] = useState([]);
   const [time, setTime] = useState({
     Hour: new Date().getHours().toString().padStart(2, "0"),
@@ -3549,6 +3550,10 @@ const PatientRegistration = () => {
       toast.error("Please Enter Paid Amount to continue");
     }
   };
+
+  console.log('LTData?.NetAmount',LTData?.NetAmount);
+  console.log('LTData?.paid',paid);
+  console.log('LTData?.paid',RateType);
   const CompanyCode = useLocalStorage("userData", "get")?.CompanyCode;
   const IsCDAC = useLocalStorage("userData", "get")?.IsCDAC;
   // console.log(CompanyCode);
@@ -3564,6 +3569,10 @@ const PatientRegistration = () => {
     enableReinitialize: true,
     validationSchema: PatientRegisterSchema,
     onSubmit: (values) => {
+      if(RateType?.[0]?.IsPatientFullPaid === 1 && LTData?.NetAmount != paid ){
+          toast.error("Full paymant is required for this client.");
+          return;
+      }
       const data = DynamicFieldValidations();
       setVisibleFields(data);
       const flag = data.filter((ele) => ele?.isError === true);
@@ -6098,6 +6107,7 @@ const PatientRegistration = () => {
                     // disabled={handleLockRegistation}
                     className="btn btn-success w-100 btn-sm"
                     onClick={() => {
+                      
                       handleSubmit();
                       window.scrollTo(0, 0);
                     }}

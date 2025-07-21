@@ -181,6 +181,7 @@ export const getAccessDataRate = (state, centerID) => {
             HideAmount: ele?.HideAmount,
             ProEmployee: ele?.ProEmployee,
             AutoEmail: ele?.IsAutoPRDM,
+            IsPatientFullPaid:ele?.IsPatientFullPaid
           };
         });
         centerID === "" && val.unshift({ label: "All RateType", value: "" });

@@ -147,9 +147,10 @@ const CentreMaster = () => {
     IsAutoEmail: state?.data?.IsAutoEmail ? state?.data?.IsAutoEmail : 0,
     IsAutoPRDM: state?.data?.IsAutoPRDM ? state?.data?.IsAutoPRDM : 0,
     BillCode: state?.data?.BillCode ? state?.data?.BillCode : "",
+    IsPatientFullPaid: state?.data?.IsPatientFullPaid ? state?.data?.IsPatientFullPaid : 0,
   });
 
-  console.log({ formData });
+  console.log('formData?.IsPatientFullPaid',formData?.IsPatientFullPaid );
 
   useEffect(() => {
     if (name === "center") {
@@ -716,10 +717,8 @@ const CentreMaster = () => {
                 isActive: values?.isActive ? 1 : 0,
                 isNabl: values?.isNabl ? 1 : 0,
                 // BillCode: formData?.BillCode,
-                BillCode:
-                  formData?.CentreType === "Processing Lab"
-                    ? formData?.BillCode
-                    : "",
+                BillCode: formData?.CentreType === "Processing Lab" ? formData?.BillCode : "",
+                IsPatientFullPaid: formData?.IsPatientFullPaid || 0,
               })
             )
             .then((res) => {
@@ -1603,7 +1602,7 @@ const CentreMaster = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="col-sm-1 col-md-2">
+              <div className="col-sm-1 col-md-2 col-xl-1">
                 <input
                   type="checkbox"
                   name="IsAutoPRDM"
@@ -1613,6 +1612,18 @@ const CentreMaster = () => {
                 />
                 <label className="control-label ml-2" htmlFor="IsAutoPRDM">
                   {t("IsAutoPRDM")}
+                </label>
+              </div>
+              <div className="col-sm-1 col-md-2 col-xl-2">
+                <input
+                  type="checkbox"
+                  name="IsPatientFullPaid"
+                  id="IsPatientFullPaid"
+                  onChange={handleChange}
+                  checked={formData?.IsPatientFullPaid}
+                />
+                <label className="control-label ml-2" htmlFor="IsPatientFullPaid">
+                  {t("IsPatientFullPaid")}
                 </label>
               </div>
             </>
