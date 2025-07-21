@@ -9,7 +9,9 @@ import { useTranslation } from "react-i18next";
 
 import Accordion from "@app/components/UI/Accordion";
 import Tables from "../../components/UI/customTable";
+import { useNavigate } from "react-router-dom";
 const RefundAfterBill = () => {
+  const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
   const [BindRefundReason, setBindRefundReason] = useState([]);
   const [dropdownData, setDropDownData] = useState({
@@ -98,6 +100,9 @@ const RefundAfterBill = () => {
         setLoad({ ...load, saveLoad: false });
         setLabNo("");
         setTableData([]);
+        navigate("/Settlement", {
+          state: { LedgerTransactionNo: data?.[0]?.LedgerTransactionNo },
+        });
       })
       .catch((err) => {
         toast.error(

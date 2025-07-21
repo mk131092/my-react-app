@@ -12,13 +12,15 @@ import Tables from "../../components/UI/customTable";
 import { dateConfig, number } from "../../utils/helpers";
 
 import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
 
 function SettlementPatient() {
+  const location = useLocation();
   const [paymentMode, setPaymentMode] = useState([]);
   const [BankName, setBankName] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [Load, setLoad] = useState(false);
-  const [LabNo, setLabNo] = useState([]);
+  const [LabNo, setLabNo] = useState(location?.state?.LedgerTransactionNo || "");
 
   const [payload, setPayload] = useState({
     PayBy: "0",
@@ -56,10 +58,10 @@ function SettlementPatient() {
       setPayload({ ...payload, [name]: value });
     }
   };
-  const fetch = () => {
+  const fetch = (lbNo='') => {
     axiosInstance
       .post("Settlement/GetDataToSettlement", {
-        LedgerTransactionNo: LabNo?.trim(),
+        LedgerTransactionNo: lbNo.trim() || LabNo?.trim(),
       })
       .then((res) => {
         if (res?.data?.message.length == 0) {
@@ -131,6 +133,8 @@ function SettlementPatient() {
         );
       });
   };
+
+  console.log("location::::",location?.state);
 
   const handleSubmit = () => {
     const { disable, message } = validate(payload?.PaymentMode);
@@ -226,9 +230,12 @@ function SettlementPatient() {
   };
 
   useEffect(() => {
+    if(location?.state?.LedgerTransactionNo){
+      fetch(location?.state?.LedgerTransactionNo)
+    }
     getPaymentModes("PaymentMode", setPaymentMode);
     getPaymentModes("BankName", setBankName);
-  }, []);
+  }, [location?.state?.LedgerTransactionNo]);
 
   const { t } = useTranslation();
   const handleKeyDown = (e) => {
