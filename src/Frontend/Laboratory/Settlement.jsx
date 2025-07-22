@@ -58,10 +58,15 @@ function SettlementPatient() {
       setPayload({ ...payload, [name]: value });
     }
   };
-  const fetch = (lbNo='') => {
+  const fetch = (lbNo="") => {
+    console.log('lbNo',typeof "lbNo");
+    let labNumber = LabNo?.trim()
+    if(typeof lbNo === 'string'){
+      labNumber = lbNo
+    }
     axiosInstance
       .post("Settlement/GetDataToSettlement", {
-        LedgerTransactionNo: lbNo.trim() || LabNo?.trim(),
+        LedgerTransactionNo: labNumber,
       })
       .then((res) => {
         if (res?.data?.message.length == 0) {

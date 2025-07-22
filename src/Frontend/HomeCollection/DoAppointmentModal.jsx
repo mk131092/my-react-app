@@ -103,6 +103,7 @@ const DoAppointmentModal = ({
     hcrequestid: "",
     followupcallid: "",
     PaidAmt: "0",
+    isPaid:0
     // phelboshare: pheleboCharge?.value,
   });
   console.log(selectedPhelebo);
@@ -246,12 +247,29 @@ const DoAppointmentModal = ({
     //     }));
     //   }, 1200);
     // }
+    if(name === 'isPaid'){
+      console.log('checked::',checked);
+      setAppointData({
+      ...appointData,
+      [name]: checked ,
+    });
+      isPaidTotalAmount(checked)
+      return 
+    }
 
     setAppointData({
       ...appointData,
       [name]: type === "checkbox" ? checked : value,
     });
   };
+
+  const isPaidTotalAmount = (isSum)=>{
+    console.log('object', isSum);
+    setAppointData(prev=>({...prev, PaidAmt: isSum ? net : ''}))
+    if(!isSum){
+      setAppointData(prev=>({...prev, ['isPaid']: false}));
+    }
+  }
 
   const handleTestChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -671,7 +689,9 @@ const DoAppointmentModal = ({
 
     if (coupon?.field) {
       toast.error("Remove Coupon First");
-    } else setBookingData({ ...bookingData, [name]: value });
+    } else {
+      setBookingData({ ...bookingData, [name]: value })
+    };
 
     // console.log(bookingData);
   };
@@ -687,7 +707,9 @@ const DoAppointmentModal = ({
           SearchBy: "TestName",
         })
         .then((res) => {
-          if (res?.data?.success) setSuggestion(res?.data?.message);
+          if (res?.data?.success){
+             setSuggestion(res?.data?.message);
+          }
           else {
             toast.error("Please check rate/Share and sample type");
           }
@@ -1454,6 +1476,19 @@ const DoAppointmentModal = ({
                   onChange={handleSearchSelectChange}
                 />
               </div>
+               <div className="col-sm-2">
+                <input
+                  type="checkbox"
+                  id="isPaid"
+                  name="isPaid"
+                  onChange={handleChange}
+                  checked={appointData?.isPaid}
+                />
+                &nbsp;&nbsp;
+                <label htmlFor="isPaid" className="control-label">
+                  {t("isPaid")}
+                </label>
+              </div>
             </div>
 
             <>
@@ -1477,6 +1512,7 @@ const DoAppointmentModal = ({
                         onKeyDown={handleIndex}
                         onBlur={() => {
                           autocompleteOnBlur(setSuggestion);
+                          isPaidTotalAmount(false)
                           setTimeout(() => {
                             setBookingData({
                               ...bookingData,
@@ -1658,8 +1694,9 @@ const DoAppointmentModal = ({
                         id="PaidAmt"
                         value={appointData?.PaidAmt}
                         onChange={handleChange}
-                        disabled={tableData.length === 0}
-                        // disabled={true}
+                        // disabled={tableData.length === 0}
+                        disabled={true}
+                        readOnly="readonly"
                         onBlur={handlePaidAmountBlur}
                         // className={"required-fields"}
                       />
