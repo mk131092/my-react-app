@@ -279,7 +279,7 @@ const DoAppointmentModal = ({
   };
 
   const isPaidTotalAmount = (isSum) => {
-    setAppointData((prev) => ({ ...prev, PaidAmt: isSum ? net : "0" }));
+    setAppointData((prev) => ({ ...prev, PaidAmt: isSum ? (net - discountamount) : "0" }));
     if (!isSum) {
       setAppointData((prev) => ({ ...prev, ["isPaid"]: false }));
     }
