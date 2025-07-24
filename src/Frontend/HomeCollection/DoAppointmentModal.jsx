@@ -103,7 +103,10 @@ const DoAppointmentModal = ({
     hcrequestid: "",
     followupcallid: "",
     PaidAmt: "0",
-    isPaid:0
+    isPaid: 0,
+    BankName: "",
+    TransactionDate: new Date(),
+    TransactionID: "",
     // phelboshare: pheleboCharge?.value,
   });
   console.log(selectedPhelebo);
@@ -152,6 +155,7 @@ const DoAppointmentModal = ({
 
   const [showLog, setShowLog] = useState({ status: false, data: "" });
   const [errors, setError] = useState([]);
+  const [bankList, setBankList] = useState([]);
 
   const [showCoupon, setShowCoupon] = useState({
     BindTestCouponShow: false,
@@ -247,28 +251,39 @@ const DoAppointmentModal = ({
     //     }));
     //   }, 1200);
     // }
-    if(name === 'isPaid'){
-      console.log('checked::',checked);
+
+    if (name === "isPaid") {
+      console.log("checked::", checked);
       setAppointData({
-      ...appointData,
-      [name]: checked ,
-    });
-      isPaidTotalAmount(checked)
-      return 
+        ...appointData,
+        [name]: checked,
+      });
+      isPaidTotalAmount(checked);
+      return;
     }
 
-    setAppointData({
-      ...appointData,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    if (name === "Paymentmode") {
+      setAppointData((prev) => ({
+        ...prev,
+        BankName: "",
+        TransactionID: "",
+        TransactionDate: "",
+        Paymentmode: value,
+      }));
+    } else {
+      setAppointData({
+        ...appointData,
+        [name]: type === "checkbox" ? checked : value,
+      });
+    }
   };
 
-  const isPaidTotalAmount = (isSum)=>{
-    setAppointData(prev=>({...prev, PaidAmt: isSum ? net : '0'}))
-    if(!isSum){
-      setAppointData(prev=>({...prev, ['isPaid']: false}));
+  const isPaidTotalAmount = (isSum) => {
+    setAppointData((prev) => ({ ...prev, PaidAmt: isSum ? net : "0" }));
+    if (!isSum) {
+      setAppointData((prev) => ({ ...prev, ["isPaid"]: false }));
     }
-  }
+  };
 
   const handleTestChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -464,6 +479,7 @@ const DoAppointmentModal = ({
   //     setError(generatedError);
   //   }
   // };
+
   const getReceipt = async (id) => {
     // debugger;
     console.log("Calling receipt with ID:", id);
@@ -482,6 +498,8 @@ const DoAppointmentModal = ({
     }
   };
 
+  
+
   const handleSubmit = () => {
     const paid = parseFloat(appointData?.PaidAmt || 0);
     const finalAmount = Number((net - discountamount).toFixed(2));
@@ -496,7 +514,6 @@ const DoAppointmentModal = ({
 
     const datas = tableData.map((ele) => {
       const DiscountPercentage = (Number(discountamount) / Number(net)) * 100;
-
       const NetAmount = (
         ele?.Rate -
         (DiscountPercentage / 100) * ele?.Rate
@@ -547,12 +564,16 @@ const DoAppointmentModal = ({
     if (generatedError === "") {
       setLoad(true);
 
-      const { PaidAmt, ...cleanAppointData } = appointData;
+      const payBankName = (bankList?.find((data, idx) => data?.value === Number(appointData?.BankName)))?.label;
+      console.log('payBankName',payBankName);
+      // return;
+      const {BankName, PaidAmt, ...cleanAppointData } = appointData;
 
       axios
         .post("/api/v1/CustomerCare/SaveHomeCollection", {
           datatosave: datas,
           ...cleanAppointData,
+          BankName:payBankName,
           CouponCode: coupon?.field ? coupon?.code : "",
           CouponId: coupon?.field ? couponData[0]?.CoupanId : "",
           IsCoupon: coupon?.field ? 1 : 0,
@@ -688,8 +709,8 @@ const DoAppointmentModal = ({
     if (coupon?.field) {
       toast.error("Remove Coupon First");
     } else {
-      setBookingData({ ...bookingData, [name]: value })
-    };
+      setBookingData({ ...bookingData, [name]: value });
+    }
 
     // console.log(bookingData);
   };
@@ -705,10 +726,9 @@ const DoAppointmentModal = ({
           SearchBy: "TestName",
         })
         .then((res) => {
-          if (res?.data?.success){
-             setSuggestion(res?.data?.message);
-          }
-          else {
+          if (res?.data?.success) {
+            setSuggestion(res?.data?.message);
+          } else {
             toast.error("Please check rate/Share and sample type");
           }
         })
@@ -781,7 +801,7 @@ const DoAppointmentModal = ({
   };
 
   const handleListSearch = (data, name) => {
-    isPaidTotalAmount(false)
+    isPaidTotalAmount(false);
     switch (name) {
       case "TestName":
         setBookingData({
@@ -955,12 +975,16 @@ const DoAppointmentModal = ({
       const value = tableData.filter(
         (ele) => ele.InvestigationID !== data.InvestigationID
       );
-      isPaidTotalAmount(false)
+      isPaidTotalAmount(false);
       setTableData(value);
       // console.log(value);
       toast.success("Test Successfully Removed");
     }
   };
+
+  // 1.TransactionID
+  // 2.TransactionDate
+  // 3.BankName
 
   const getSearchRecords = () => {
     const AppDateTime = moment(selectedPhelebo.AppointmentDate).format(
@@ -1155,12 +1179,32 @@ const DoAppointmentModal = ({
         );
       });
   };
+
+  const getBankList = () => {
+    axiosInstance
+      .post("Global/GetGlobalData", {
+        Type: "BankName",
+      })
+      .then((res) => {
+        let data = res.data.message;
+        let listArr = data.map((ele) => {
+          return {
+            value: ele?.FieldID,
+            label: ele?.FieldDisplay,
+          };
+        });
+        setBankList(listArr);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     // setShowDOS(true);
     getBindSourceCall();
     getDiscountApproval();
     // getPheleboCharge();
     getSearchRecords();
+    getBankList();
   }, []);
   console.log(showLog);
   const isMobile = window.innerWidth <= 768;
@@ -1476,7 +1520,7 @@ const DoAppointmentModal = ({
                   onChange={handleSearchSelectChange}
                 />
               </div>
-               <div className="col-sm-2">
+              <div className="col-sm-2">
                 <input
                   type="checkbox"
                   id="isPaid"
@@ -1704,7 +1748,81 @@ const DoAppointmentModal = ({
                       )}
                     </div>
                   </div>
-
+                  {/* Working */}
+                  {console.log('appointData?.Paymentmode', bankList?.filter((blist, idx)=>[753, 754]?.includes(blist.value)))}
+                  <div className="row mb-2 mt-1">
+                    <div className="col-md-4">
+                      <SelectBox
+                        name="BankName"
+                        selectedValue={appointData?.BankName}
+                        lable="BankName"
+                        id="BankName"
+                        className="required-fields"
+                        options={ ['Online Payment'].includes(appointData?.Paymentmode) ? 
+                          bankList?.filter((blist, idx)=>[753, 754]?.includes(blist?.value))
+                          :
+                          [
+                            { label: "Select Bank Name", value: "" },
+                            ...bankList,
+                          ]}
+                        isDisabled={
+                          ["Cash", "Credit", ""].includes(
+                            appointData?.Paymentmode
+                          )
+                            ? true
+                            : false
+                        }
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="col-md-4">
+                      <Input
+                        placeholder=""
+                        id="TransactionID"
+                        name="TransactionID"
+                        lable="TransactionID"
+                        disabled={
+                          ["Cash", "Credit", ""].includes(
+                            appointData?.Paymentmode
+                          )
+                            ? true
+                            : false
+                        }
+                        value={appointData?.TransactionID}
+                        type="text"
+                        // readOnly="readonly"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="col-md-4">
+                      <Input
+                        disabled={
+                          ["Cash", "Credit", ""].includes(
+                            appointData?.Paymentmode
+                          )
+                            ? true
+                            : false
+                        }
+                        type={
+                          ["Cash", "Paytm"].includes(appointData?.BankName)
+                            ? "text"
+                            : "date"
+                        }
+                        id="TransactionDate"
+                        className={`select-input-box form-control input-sm ${
+                          ["Cash", "Online Payment", "Paytm"].includes(
+                            appointData?.BankName
+                          )
+                            ? ""
+                            : "required"
+                        }`}
+                        name="TransactionDate"
+                        value={appointData?.TransactionDate}
+                        // onChange={(e) => handleChangeRTCData(e, index)}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
                   <div className="row">
                     <div className="col-md-4">
                       <Input
