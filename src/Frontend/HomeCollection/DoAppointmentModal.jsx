@@ -264,8 +264,7 @@ const DoAppointmentModal = ({
   };
 
   const isPaidTotalAmount = (isSum)=>{
-    console.log('object', isSum);
-    setAppointData(prev=>({...prev, PaidAmt: isSum ? net : ''}))
+    setAppointData(prev=>({...prev, PaidAmt: isSum ? net : '0'}))
     if(!isSum){
       setAppointData(prev=>({...prev, ['isPaid']: false}));
     }
@@ -686,7 +685,6 @@ const DoAppointmentModal = ({
 
   const handleBookingChange = (e) => {
     const { name, value } = e.target;
-
     if (coupon?.field) {
       toast.error("Remove Coupon First");
     } else {
@@ -783,6 +781,7 @@ const DoAppointmentModal = ({
   };
 
   const handleListSearch = (data, name) => {
+    isPaidTotalAmount(false)
     switch (name) {
       case "TestName":
         setBookingData({
@@ -956,6 +955,7 @@ const DoAppointmentModal = ({
       const value = tableData.filter(
         (ele) => ele.InvestigationID !== data.InvestigationID
       );
+      isPaidTotalAmount(false)
       setTableData(value);
       // console.log(value);
       toast.success("Test Successfully Removed");
@@ -1512,7 +1512,6 @@ const DoAppointmentModal = ({
                         onKeyDown={handleIndex}
                         onBlur={() => {
                           autocompleteOnBlur(setSuggestion);
-                          isPaidTotalAmount(false)
                           setTimeout(() => {
                             setBookingData({
                               ...bookingData,
