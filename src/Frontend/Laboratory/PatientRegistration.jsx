@@ -432,7 +432,7 @@ const PatientRegistration = () => {
     });
   };
 
-  const handleSaveSmsEmailSave = (data, saveSmsEmailArgument) => {
+  const handleSaveSmsEmailSave = async (data, saveSmsEmailArgument) => {
     setIsSubmit({
       type: "Success",
       isLoading: true,
@@ -561,16 +561,21 @@ const PatientRegistration = () => {
         FieldIds: "",
         mandatoryFields: [],
       })
-      .then((res) => {
+      .then(async (res) => {
+        
         if (res.data.success) {
           toast.success(res.data.message);
-
           // console.log(res?.data);
           if (res?.data?.data?.hideReceipt != 1) {
-            // getReceipt(
-            //   res?.data?.data?.ledgertransactionID,
-            //   res?.data?.data?.fullyPaid
-            // );
+            setIsSubmit({
+              type: "Error",
+              isLoading: false,
+            });
+            handleReset();
+            await getReceipt(
+              res?.data?.data?.ledgertransactionID,
+              res?.data?.data?.fullyPaid
+            );
           }
 
           if (res?.data?.data?.isConcern == 1) {
@@ -585,7 +590,7 @@ const PatientRegistration = () => {
             res?.data?.data?.isTrfRequired,
             res?.data?.data?.isDepartmentSlip
           );
-          handleReset();
+          // handleReset();
         } else {
           setIsSubmit({
             type: "Error",
@@ -3302,8 +3307,8 @@ const PatientRegistration = () => {
     return data;
   };
 
-  const getReceipt = (id, fullyPaid) => {
-    axiosReport
+  const getReceipt = async (id, fullyPaid) => {
+    await axiosReport
       .post("getReceipt", {
         LedgerTransactionIDHash: id,
       })
@@ -3523,7 +3528,6 @@ const PatientRegistration = () => {
   };
 
   const handleSubmitApi = () => {
-
     let isBankSelect = true;
     RcData?.map((data) => {
       if (!data.BankName && !["Cash", "Paytm"].includes(data?.PaymentMode)) {
