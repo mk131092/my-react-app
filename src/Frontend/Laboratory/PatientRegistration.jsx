@@ -177,7 +177,6 @@ const PatientRegistration = () => {
     load: false,
   });
 
-
   const [Category, setCategory] = useState([]);
   const [time, setTime] = useState({
     Hour: new Date().getHours().toString().padStart(2, "0"),
@@ -447,6 +446,7 @@ const PatientRegistration = () => {
     const selectedCountry = countries?.find(
       (ele) => ele?.value === state?.Country
     )?.label;
+
     axiosInstance
       .post("PatientRegistration/SaveData", {
         PatientData: getTrimmedData({
@@ -567,10 +567,10 @@ const PatientRegistration = () => {
 
           // console.log(res?.data);
           if (res?.data?.data?.hideReceipt != 1) {
-            getReceipt(
-              res?.data?.data?.ledgertransactionID,
-              res?.data?.data?.fullyPaid
-            );
+            // getReceipt(
+            //   res?.data?.data?.ledgertransactionID,
+            //   res?.data?.data?.fullyPaid
+            // );
           }
 
           if (res?.data?.data?.isConcern == 1) {
@@ -599,7 +599,7 @@ const PatientRegistration = () => {
         toast.error(
           err?.response?.data?.message
             ? err?.response?.data?.message
-            : "Something Went Wrong"
+            : "Something Went Wrong.11"
         );
         setIsSubmit({
           type: "Error",
@@ -774,7 +774,7 @@ const PatientRegistration = () => {
         toast.error(
           err?.response?.data?.message
             ? err?.response?.data?.message
-            : "Something went wrong."
+            : "Something went wrong.22"
         );
       });
   };
@@ -1179,7 +1179,7 @@ const PatientRegistration = () => {
         toast.error(
           err.response.data.message
             ? err.response.data.message
-            : "Something went wrong"
+            : "Something went wrong.33"
         );
         console.log(err);
       });
@@ -1206,7 +1206,7 @@ const PatientRegistration = () => {
           setCity(cities);
           return cities;
         } else {
-          toast.error("Something went wrong");
+          toast.error("Something went wrong.44");
           setLoad(false);
         }
       })
@@ -2267,7 +2267,7 @@ const PatientRegistration = () => {
       })
       .catch((err) => {
         toast.error(
-          err?.data?.message ? err?.data?.message : "SomeThing Went Wrong"
+          err?.data?.message ? err?.data?.message : "SomeThing Went Wrong.55"
         );
       });
   };
@@ -3303,21 +3303,20 @@ const PatientRegistration = () => {
   };
 
   const getReceipt = (id, fullyPaid) => {
-    axiosReport.post("getReceipt", {
-      LedgerTransactionIDHash: id,
-    });
-    console
-      .log({ id }, "htisiis ")
+    axiosReport
+      .post("getReceipt", {
+        LedgerTransactionIDHash: id,
+      })
       .then((res) => {
         // window.open(res?.data?.url, "_blank");
         if (fullyPaid == 1) getReceiptFullyPaid(id);
       })
       .catch((err) => {
-        toast.error(
-          err?.data?.response?.message
-            ? err?.data?.response?.message
-            : "Error Occured"
-        );
+        // toast.error(
+        //   err?.data?.response?.message
+        //     ? err?.data?.response?.message
+        //     : "Error Occured"
+        // );
       });
   };
   // console.log(state);
@@ -3330,11 +3329,11 @@ const PatientRegistration = () => {
         window.open(res?.data?.url, "_blank");
       })
       .catch((err) => {
-        toast.error(
-          err?.data?.response?.message
-            ? err?.data?.response?.message
-            : "Error Occured"
-        );
+        // toast.error(
+        //   err?.data?.response?.message
+        //     ? err?.data?.response?.message
+        //     : "Error Occured"
+        // );
       });
   };
   const getConcern = (id) => {
@@ -3524,6 +3523,20 @@ const PatientRegistration = () => {
   };
 
   const handleSubmitApi = () => {
+
+    let isBankSelect = true;
+    RcData?.map((data) => {
+      if (!data.BankName && !["Cash", "Paytm"].includes(data?.PaymentMode)) {
+        toast.error("Bank name is required.");
+        isBankSelect = false;
+        return;
+      }
+    });
+
+    if (!isBankSelect) {
+      return;
+    }
+
     // debugger;
     const { DocumentFlag, message } = handleFileValidationUpload();
     // console.log(DocumentFlag,message)
@@ -3551,9 +3564,9 @@ const PatientRegistration = () => {
     }
   };
 
-  console.log('LTData?.NetAmount',LTData?.NetAmount);
-  console.log('LTData?.paid',paid);
-  console.log('LTData?.paid',RateType);
+  console.log("LTData?.NetAmount", LTData?.NetAmount);
+  console.log("LTData?.paid", paid);
+  console.log("LTData?.paid", RateType);
   const CompanyCode = useLocalStorage("userData", "get")?.CompanyCode;
   const IsCDAC = useLocalStorage("userData", "get")?.IsCDAC;
   // console.log(CompanyCode);
@@ -3569,9 +3582,9 @@ const PatientRegistration = () => {
     enableReinitialize: true,
     validationSchema: PatientRegisterSchema,
     onSubmit: (values) => {
-      if(RateType?.[0]?.IsPatientFullPaid === 1 && LTData?.NetAmount != paid ){
-          toast.error("Full paymant is required for this client.");
-          return;
+      if (RateType?.[0]?.IsPatientFullPaid === 1 && LTData?.NetAmount != paid) {
+        toast.error("Full paymant is required for this client.");
+        return;
       }
       const data = DynamicFieldValidations();
       setVisibleFields(data);
@@ -3724,6 +3737,7 @@ const PatientRegistration = () => {
 
   const handleChangeRTCData = (e, index) => {
     const { name, value } = e.target;
+    console.log("name, value::", name, "--", value);
     const data = [...RcData];
     data[index][name] = value;
     setRcData(data);
@@ -4924,7 +4938,7 @@ const PatientRegistration = () => {
                 )}
               </div>
             </div>
-            
+
             {/* Display none as Sachin Sir Demand */}
             <div className="row mb-1 pt-1">
               <div className="col-sm-2 col-6 d-none">
@@ -5107,9 +5121,11 @@ const PatientRegistration = () => {
                   </button>
                 </div>
               )}
-              
+
               {/* Display none as Sachin Sir Demand */}
-              <div className={`d-none ${state?.Gender === "Female" ? "col-sm-1 col-6" : "col-sm-1"}`}>
+              <div
+                className={`d-none ${state?.Gender === "Female" ? "col-sm-1 col-6" : "col-sm-1"}`}
+              >
                 <button
                   className="text-white btn-block rounded p-1"
                   type="button"
@@ -6026,7 +6042,7 @@ const PatientRegistration = () => {
                             disabled={handleRateTypePaymode === "Credit"}
                             onChange={(e) => handleChangeRTCData(e, index)}
                           >
-                            {/* <option hidden>-- Select Bank --</option> */}
+                            <option hidden>-- Select Bank --</option>
                             {getFilteredBankList(data?.PaymentMode).map(
                               (ele, index) => (
                                 <option value={ele.value} key={index}>
@@ -6107,7 +6123,6 @@ const PatientRegistration = () => {
                     // disabled={handleLockRegistation}
                     className="btn btn-success w-100 btn-sm"
                     onClick={() => {
-                      
                       handleSubmit();
                       window.scrollTo(0, 0);
                     }}

@@ -15,7 +15,7 @@ export const useLocalStorage = (key, type, valueToStore) => {
     if (encryptedData) {
       const bytes = CryptoJS.AES.decrypt(encryptedData, SECRET_KEY);
       const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
-      return JSON.parse(decryptedData);
+      return JSON.parse(decryptedData || '{}');
     }
     return null;
   }
