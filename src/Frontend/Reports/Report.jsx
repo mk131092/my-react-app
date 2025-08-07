@@ -137,6 +137,7 @@ function GetReport() {
     LabNo: "",
     ProReportType: "Summary",
     Source: "",
+    ReportTypePay:"1"
   });
 
   const getFilteredDocumentType = () => {
@@ -161,6 +162,7 @@ function GetReport() {
       });
     }
   };
+
   const handleSearchSelectChange = (label, value) => {
     console.log({ label, value });
     if (label === "PatientType") {
@@ -293,6 +295,7 @@ function GetReport() {
         `/reports/v1/commonReports/${id}`,
         {
           ...formData,
+          RerportType: Number(formData.ReportTypePay || 1),
           ToDate: moment(formData?.ToDate).format("DD-MMM-YYYY"),
           FromDate: moment(formData?.FromDate).format("DD-MMM-YYYY"),
           FromTime: Time(formData.FromTime),
@@ -976,6 +979,19 @@ function GetReport() {
                   name="DocumentType"
                   onChange={handleSelectChange}
                   lable={t("Select DocumentType")}
+                />
+              </div>
+              <div className="col-sm-2 ">
+                <SelectBox
+                  className="required-fields"
+                  options={[
+                    {label:'Amount Refund', value:'1'},
+                    {label:'Item Refund', value:'2'}
+                  ]}
+                  selectedValue={formData.ReportTypePay}
+                  name="ReportTypePay"
+                  onChange={handleSelectChange}
+                  lable={t("Report Type")}
                 />
               </div>
 

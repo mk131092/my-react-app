@@ -567,30 +567,30 @@ const PatientRegistration = () => {
           toast.success(res.data.message);
           // console.log(res?.data);
           if (res?.data?.data?.hideReceipt != 1) {
-            setIsSubmit({
-              type: "Error",
-              isLoading: false,
-            });
-            handleReset();
-            await getReceipt(
-              res?.data?.data?.ledgertransactionID,
-              res?.data?.data?.fullyPaid
-            );
+            // setIsSubmit({
+            //   type: "Error",
+            //   isLoading: false,
+            // });
+            // handleReset();
+            // await getReceipt(
+            //   res?.data?.data?.ledgertransactionID,
+            //   res?.data?.data?.fullyPaid
+            // );
           }
 
-          if (res?.data?.data?.isConcern == 1) {
-            getConcern(res?.data?.data?.ledgertransactionID);
-          }
-          if (res?.data?.data?.isPndt == 1) {
-            getPndtForm(res?.data?.data?.ledgertransactionID);
-          }
+          // if (res?.data?.data?.isConcern == 1) {
+          //   getConcern(res?.data?.data?.ledgertransactionID);
+          // }
+          // if (res?.data?.data?.isPndt == 1) {
+          //   getPndtForm(res?.data?.data?.ledgertransactionID);
+          // }
 
-          getReceiptTRF(
-            res?.data?.data?.ledgertransactionID,
-            res?.data?.data?.isTrfRequired,
-            res?.data?.data?.isDepartmentSlip
-          );
-          // handleReset();
+          // getReceiptTRF(
+          //   res?.data?.data?.ledgertransactionID,
+          //   res?.data?.data?.isTrfRequired,
+          //   res?.data?.data?.isDepartmentSlip
+          // );
+          handleReset();
         } else {
           setIsSubmit({
             type: "Error",
@@ -3341,8 +3341,8 @@ const PatientRegistration = () => {
         // );
       });
   };
-  const getConcern = (id) => {
-    axiosInstance
+  const getConcern = async(id) => {
+   await axiosInstance
       .post("ConcentFormMaster/generateConcentForm", {
         LedgerTransactionIDHash: id,
       })
@@ -3353,8 +3353,8 @@ const PatientRegistration = () => {
         toast.error(error?.response?.data?.message);
       });
   };
-  const getPndtForm = (id) => {
-    axiosInstance
+  const getPndtForm =async (id) => {
+    await axiosInstance
       .post("PndtFormMaster/generatPndtForm", {
         LedgerTransactionIDHash: id,
       })
@@ -3365,9 +3365,9 @@ const PatientRegistration = () => {
         toast.error(error?.response?.data?.message);
       });
   };
-  const getReceiptTRF = (id, TRF, DepartmentSlip) => {
+  const getReceiptTRF = async (id, TRF, DepartmentSlip) => {
     if (TRF == 1) {
-      axiosReport
+     await axiosReport
         .post("getTRF", {
           LedgerTransactionIDHash: id,
         })
@@ -3383,7 +3383,7 @@ const PatientRegistration = () => {
         });
     }
     if (DepartmentSlip == 1) {
-      axiosReport
+     await axiosReport
         .post("getDepartment", {
           LedgerTransactionIDHash: id,
         })

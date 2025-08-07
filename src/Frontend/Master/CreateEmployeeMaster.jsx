@@ -13,7 +13,7 @@ import { guidNumber } from "../util/Commonservices";
 import { EmployeeMasterSchema, EmployeeValidation } from "../../utils/Schema";
 import { axiosInstance } from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
-import { getTrimmedData, number } from "../../utils/helpers";
+import { formatDate, getTrimmedData, number } from "../../utils/helpers";
 import UploadFile from "../utils/UploadFileModal/UploadFile";
 import CameraModal from "../utils/CameraModal";
 import Accordion from "@app/components/UI/Accordion";
@@ -107,7 +107,11 @@ const CreateEmployeeMaster = () => {
   const { t } = useTranslation();
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEmployeeMaster({ ...EmployeeMaster, [name]: value });
+    let newValue = value;
+    if(name === 'EmpCode'){
+      newValue = newValue?.toUpperCase();
+    }
+    setEmployeeMaster({ ...EmployeeMaster, [name]: newValue });
   };
   console.log(EmployeeMaster);
   const handleSubmit = () => {
@@ -135,6 +139,7 @@ const CreateEmployeeMaster = () => {
                 EmployeeMaster: [
                   {
                     EmployeeID: state?.id,
+                    // EmployeeCode: 
                     AccessRight: Array?.isArray(EmployeeMaster?.AccessRight)
                       ? EmployeeMaster?.AccessRight?.join(",")
                       : EmployeeMaster?.AccessRight,
@@ -152,6 +157,7 @@ const CreateEmployeeMaster = () => {
                     Designation: EmployeeMaster?.Designation,
                     DesignationID: EmployeeMaster?.DesignationID,
                     Email: EmployeeMaster?.Email,
+                    EmployeeCode: EmployeeMaster?.EmpCode,
                     HouseNo: EmployeeMaster?.HouseNo,
                     Locality: EmployeeMaster?.Locality,
                     Mobile: (EmployeeMaster?.Mobile).toString(),
@@ -169,7 +175,7 @@ const CreateEmployeeMaster = () => {
                     isLoginApprovel: EmployeeMaster?.isLoginApprovel,
                     isPasswordChanged: EmployeeMaster?.isPasswordChanged,
                     EmployeeIDHash: EmployeeMaster?.EmployeeIDHash,
-                    DefaultCentre: EmployeeMaster?.DefaultCentre,
+                    DefaultCentre: String(EmployeeMaster?.DefaultCentre),
                     canRefund: EmployeeMaster?.canRefund,
                     canSettlement: EmployeeMaster?.canSettlement,
                     canDiscountAfterBill: EmployeeMaster?.canDiscountAfterBill,
@@ -820,7 +826,24 @@ const CreateEmployeeMaster = () => {
               </div>
             )}
 
-            {state?.id && (
+            {
+              <>
+                <div className="col-sm-2">
+                  <Input
+                    lable="Employee Code"
+                    id="Employee Code"
+                    placeholder=" "
+                    name="EmpCode"
+                    type="text"
+                    max={50}
+                    value={EmployeeMaster?.EmpCode}
+                    onChange={handleChange}
+                    // disabled={!!state?.id}
+                  />
+                </div>
+              </>
+            }
+            {/* {state?.id && (
               <>
                 <div className="col-sm-2">
                   <Input
@@ -836,7 +859,7 @@ const CreateEmployeeMaster = () => {
                   />
                 </div>
               </>
-            )}
+            )} */}
             <div className="col-sm-1 mt-1 d-flex">
               <div className="mt-1">
                 <input
