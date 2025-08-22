@@ -47,11 +47,11 @@ const NewPatientDetailModal = ({ show, handleClose, mobile }) => {
     console.log(formData);
     const updatedFormData = {
       ...formData,
-      AgeDays: ageCount(
+      AgeDays: String(ageCount(
         formData?.AgeYear,
         formData?.AgeMonth,
         formData?.AgeDays
-      ),
+      )|| "0"),
       Age: `${formData?.AgeYear == "" ? 0 : formData?.AgeYear} Y ${
         formData?.AgeMonth == "" ? 0 : formData?.AgeMonth
       } M ${ageCount(
@@ -60,8 +60,8 @@ const NewPatientDetailModal = ({ show, handleClose, mobile }) => {
         formData?.AgeDays
       )} D `,
 
-      AgeMonth: formData?.AgeMonth == "" ? 0 : formData?.AgeMonth,
-      AgeYear: formData?.AgeYear == "" ? 0 : formData?.AgeYear,
+      AgeMonth: formData?.AgeMonth == "" ? "0" : String(formData?.AgeMonth || "0"),
+      AgeYear: formData?.AgeYear == "" ? "0" : String(formData?.AgeYear || "0"),
       TotalAgeInDays:
         formData?.AgeDays == 0 &&
         formData?.AgeMonth == 0 &&
