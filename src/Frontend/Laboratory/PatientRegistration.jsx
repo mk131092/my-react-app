@@ -562,7 +562,6 @@ const PatientRegistration = () => {
         mandatoryFields: [],
       })
       .then(async (res) => {
-        
         if (res.data.success) {
           toast.success(res.data.message);
           // console.log(res?.data);
@@ -3341,8 +3340,8 @@ const PatientRegistration = () => {
         // );
       });
   };
-  const getConcern = async(id) => {
-   await axiosInstance
+  const getConcern = async (id) => {
+    await axiosInstance
       .post("ConcentFormMaster/generateConcentForm", {
         LedgerTransactionIDHash: id,
       })
@@ -3353,7 +3352,7 @@ const PatientRegistration = () => {
         toast.error(error?.response?.data?.message);
       });
   };
-  const getPndtForm =async (id) => {
+  const getPndtForm = async (id) => {
     await axiosInstance
       .post("PndtFormMaster/generatPndtForm", {
         LedgerTransactionIDHash: id,
@@ -3367,7 +3366,7 @@ const PatientRegistration = () => {
   };
   const getReceiptTRF = async (id, TRF, DepartmentSlip) => {
     if (TRF == 1) {
-     await axiosReport
+      await axiosReport
         .post("getTRF", {
           LedgerTransactionIDHash: id,
         })
@@ -3383,7 +3382,7 @@ const PatientRegistration = () => {
         });
     }
     if (DepartmentSlip == 1) {
-     await axiosReport
+      await axiosReport
         .post("getDepartment", {
           LedgerTransactionIDHash: id,
         })
