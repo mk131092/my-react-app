@@ -1578,6 +1578,7 @@ export const PhelbosearchDefault = {
   IsDeactivatePP: "1",
   SearchState: "",
   SearchCity: "",
+  // employeeMaster:'',
 };
 
 export const SkipTimeType = [

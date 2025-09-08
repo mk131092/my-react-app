@@ -34,10 +34,11 @@ import {
   PreventCharacter,
 } from "../../utils/helpers";
 import { Link } from "react-router-dom";
+import { BindEmployeeReports } from "../../utils/NetworkApi/commonApi";
 
 const PhelebotomistRegisteration = () => {
   const [errors, setErros] = useState({});
-
+  const [employeeList, setEmployeeList] = useState([]);
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
@@ -70,6 +71,7 @@ const PhelebotomistRegisteration = () => {
     CityId: "",
     P_Pincode: "",
     P_City: "",
+    EmployeeID: "",
   });
   const [PhelboCharges, setPhelboCHarges] = useState([]);
   const [DocumentType, setDocumentType] = useState([]);
@@ -95,6 +97,11 @@ const PhelebotomistRegisteration = () => {
 
   console.log(DocumentType);
 
+  useEffect(() => {
+    BindEmployeeReports(setEmployeeList);
+  }, []);
+
+  console.log("employeeList", employeeList);
   const fetchCities = (id) => {
     const postdata = {
       StateId: Array.isArray(id) ? id : [Number(id)],
@@ -327,6 +334,7 @@ const PhelebotomistRegisteration = () => {
         DucumentType: formData?.DocumentType ? formData?.DocumentType : "",
         UserName: formData?.UserName.trim(),
         Password: formData?.Password.trim(),
+        EmployeeID: formData?.EmployeeID?.trim() || ""
       };
       delete updatedFormData["DocumentNo"];
       delete updatedFormData["DocumentType"];
@@ -666,14 +674,14 @@ const PhelebotomistRegisteration = () => {
     }
   };
 
-  const editDetailsHandler = (id) => {
+  const editDetailsHandler = (rowData) => {
     axios
       .post("/api/v1/PhelebotomistMaster/EditPhlebotomist", {
-        Phlebotomist: id,
+        Phlebotomist: rowData?.PhlebotomistID,
       })
       .then((res) => {
         const details = res?.data?.message;
-        console.log(details);
+        console.log('details',details);
         const details2 = {
           PhelebotomistId: details[0]?.PhlebotomistID || "",
           Name: details[0]?.NAME || "",
@@ -712,6 +720,7 @@ const PhelebotomistRegisteration = () => {
           LogoutTime: details[0]?.LogoutTime,
           StateId: getStatecity("state", details),
           CityId: getStatecity("city", details),
+          EmployeeID: rowData?.EmployeeID,
         };
         setFormData(details2);
         fetchCities(details2?.StateId);
@@ -1356,6 +1365,18 @@ const PhelebotomistRegisteration = () => {
               onChange={handleSelectChange}
             />
           </div>
+
+          <div className="col-sm-2">
+            <SelectBox
+              lable="Employee Master"
+              id="EmployeeID"
+              name="EmployeeID"
+              selectedValue={formData?.EmployeeID}
+              options={[{ label: "Select", value: "" }, ...employeeList]}
+              onChange={handleSelectChange}
+            />
+          </div>
+
           <div className="col-sm-2">
             <Input
               type="time"
@@ -1387,6 +1408,7 @@ const PhelebotomistRegisteration = () => {
               <span className="error-message">{errors?.LogoutTime}</span>
             )}
           </div>
+
           <div className="col-sm-1">
             <Input
               placeholder=" "
@@ -1503,7 +1525,6 @@ const PhelebotomistRegisteration = () => {
               onChange={handleSearchChange}
             />
           </div>
-
           <div className="col-sm-2">
             <SelectBox
               lable="Select Gender"
@@ -1582,7 +1603,7 @@ const PhelebotomistRegisteration = () => {
                       <Link
                         // className="bg-primary"
                         onClick={async () => {
-                          editDetailsHandler(ele.PhlebotomistID);
+                          editDetailsHandler(ele);
                         }}
                       >
                         Edit
