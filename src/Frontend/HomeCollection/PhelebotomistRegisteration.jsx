@@ -1483,6 +1483,7 @@ const PhelebotomistRegisteration = () => {
                   CityId: "",
                   P_Pincode: "",
                   P_City: "",
+                  EmployeeID:''
                 });
                 setErros({});
               }}
