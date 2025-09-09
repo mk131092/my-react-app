@@ -63,7 +63,7 @@ import axios from "axios";
 const PatientRegistration = () => {
   const [states, setStates] = useState([]);
   const [cities, setCity] = useState([]);
-  const [countries, setCountry] = useState([{ label: "India", value: "1" }]);
+  const [countries, setCountry] = useState([{ label: "India", value: "India" }]);
 
   const [patientImg, setPatientImg] = useState({
     img: PlaceholderImage,
@@ -3106,6 +3106,7 @@ const PatientRegistration = () => {
   };
 
   const handleSelctData = async (data) => {
+    console.log('data?.Country',data?.Country)
     console.log("throughMobileData:", throughMobileData);
 
     setThroughMobileData(true);
@@ -4344,7 +4345,7 @@ const PatientRegistration = () => {
                   type="text"
                   lable={t("UHID")}
                   max={15}
-                  // disabled={state?.Mobile && CompanyCode !== "DMC"}
+                   disabled={state?.Mobile && CompanyCode !== "DMC"}
                   value={state?.PatientCode}
                   name="PatientCode"
                   className={CompanyCode === "DMC" ? "required-fields" : ""}
@@ -4452,7 +4453,7 @@ const PatientRegistration = () => {
                       name="Title"
                       id="Title"
                       lable={t("Title")}
-                      // isDisabled={throughMobileData || throughMemberData}
+                      isDisabled={throughMobileData || throughMemberData}
                       selectedValue={state?.Title}
                       onChange={handleMainChange}
                     />
@@ -4466,7 +4467,7 @@ const PatientRegistration = () => {
                       id="FirstName"
                       lable={t("First Name")}
                       placeholder={t(" ")}
-                      // disabled={throughMobileData || throughMemberData}
+                       disabled={throughMobileData || throughMemberData}
                       value={state?.FirstName}
                       onChange={handleMainChange}
                       required
@@ -4502,7 +4503,7 @@ const PatientRegistration = () => {
                   onKeyDown={(e) =>
                     someMethodWithoutAccessToEvent(e, "LastName")
                   }
-                  // disabled={throughMobileData || throughMemberData}
+                  disabled={throughMobileData || throughMemberData}
                   max={35}
                   onChange={handleMainChange}
                 />
@@ -4516,7 +4517,7 @@ const PatientRegistration = () => {
                   placeholder={t(" ")}
                   id="LastName"
                   value={state?.LastName}
-                  // disabled={throughMobileData || throughMemberData}
+                  disabled={throughMobileData || throughMemberData}
                   onChange={handleMainChange}
                 />
               </div>
@@ -4659,7 +4660,7 @@ const PatientRegistration = () => {
                   value={state?.DOB}
                   className="custom-calendar"
                   name="DOB"
-                  // disabled={throughMobileData || throughMemberData}
+                   disabled={throughMobileData || throughMemberData}
                   placeholder={t("DOB")}
                   id="DOB"
                   lable={t("DOB")}
@@ -4684,7 +4685,7 @@ const PatientRegistration = () => {
                     name="AgeYear"
                     value={state?.AgeYear}
                     onInput={(e) => number(e, 3, 120)}
-                    // disabled={throughMemberData || throughMobileData}
+                     disabled={throughMemberData || throughMobileData}
                     onChange={handleDOBCalculation}
                   />
                   <Input
@@ -4694,7 +4695,7 @@ const PatientRegistration = () => {
                     className="required-fields"
                     value={state?.AgeMonth}
                     onInput={(e) => number(e, 2, 12)}
-                    // disabled={throughMemberData || throughMobileData}
+                     disabled={throughMemberData || throughMobileData}
                     onChange={handleDOBCalculation}
                   />
                   <Input
@@ -4704,7 +4705,7 @@ const PatientRegistration = () => {
                     name="AgeDays"
                     value={state?.AgeDays}
                     onInput={(e) => number(e, 2, 31)}
-                    // disabled={throughMemberData || throughMobileData}
+                     disabled={throughMemberData || throughMobileData}
                     onChange={handleDOBCalculation}
                   />
                 </div>
@@ -4823,6 +4824,7 @@ const PatientRegistration = () => {
                   placeholder={t("")}
                   id="Email"
                   value={state?.Email}
+                   disabled={throughMobileData || throughMemberData}
                   onChange={handleMainChange}
                 />
                 {errors?.Email && (
@@ -4841,6 +4843,7 @@ const PatientRegistration = () => {
                   placeholder={t("")}
                   id="Address"
                   value={state?.HouseNo}
+                  disabled={throughMobileData || throughMemberData}
                   className="required-fields"
                   onChange={handleMainChange}
                 />
@@ -4860,6 +4863,7 @@ const PatientRegistration = () => {
                   onInput={(e) => number(e, 6)}
                   id="PinCode"
                   value={state?.PinCode}
+                //  disabled={throughMobileData || throughMemberData}
                   onChange={handleMainChange}
                 />
               </div>
@@ -4869,6 +4873,7 @@ const PatientRegistration = () => {
                   max={30}
                   type="text"
                   value={state?.Locality}
+                //  disabled={throughMobileData || throughMemberData}
                   onChange={handleMainChange}
                   name="Locality"
                   placeholder={t("")}
@@ -4882,6 +4887,7 @@ const PatientRegistration = () => {
                   name="Country"
                   lable={t("Country")}
                   id="Country"
+                 //  isDisabled={throughMobileData || throughMemberData}
                   removeIsClearable={true}
                   placeholderName={t("Country")}
                   value={state?.Country}
@@ -4905,6 +4911,7 @@ const PatientRegistration = () => {
                   lable={t("State")}
                   id="State"
                   removeIsClearable={true}
+                  // isDisabled={throughMobileData || throughMemberData}
                   placeholderName={t("State")}
                   value={state?.State}
                   className="required-fields"
@@ -4927,6 +4934,7 @@ const PatientRegistration = () => {
                   lable={t("City")}
                   id="City"
                   removeIsClearable={true}
+                 //  isDisabled={throughMobileData || throughMemberData}
                   placeholderName={t("City")}
                   className="required-fields"
                   isDisabled={!state?.State}
