@@ -383,6 +383,7 @@ const ReceiptReprintTable = ({
                           {col.header === "Age/Gender" &&
                             `${data?.Age}/${data?.Gender == "Female" ? "F" : "M"}`}
                           {col.header === "Mobile No" && data?.Mobile}
+                           {col.header === "HomeCollectionBoy" && data?.HomeCollectionBoy}
                           {col.header === "Gross Amt" && (
                             <div className="amount">{data?.GrossAmount}</div>
                           )}

@@ -3106,7 +3106,6 @@ const PatientRegistration = () => {
   };
 
   const handleSelctData = async (data) => {
-    console.log('data?.Country',data?.Country)
     console.log("throughMobileData:", throughMobileData);
 
     setThroughMobileData(true);
@@ -4319,7 +4318,7 @@ const PatientRegistration = () => {
                     <Input
                       type="text"
                       value={state?.PreBookingNo}
-                      // disabled={throughMobileData || throughMemberData}
+                      disabled={true}
                       lable={t("Pre Booking No")}
                       name="PreBookingNo"
                       onChange={handleMainChange}
@@ -4863,7 +4862,7 @@ const PatientRegistration = () => {
                   onInput={(e) => number(e, 6)}
                   id="PinCode"
                   value={state?.PinCode}
-                //  disabled={throughMobileData || throughMemberData}
+              
                   onChange={handleMainChange}
                 />
               </div>
@@ -4873,7 +4872,7 @@ const PatientRegistration = () => {
                   max={30}
                   type="text"
                   value={state?.Locality}
-                //  disabled={throughMobileData || throughMemberData}
+               
                   onChange={handleMainChange}
                   name="Locality"
                   placeholder={t("")}
@@ -4887,7 +4886,7 @@ const PatientRegistration = () => {
                   name="Country"
                   lable={t("Country")}
                   id="Country"
-                 //  isDisabled={throughMobileData || throughMemberData}
+               
                   removeIsClearable={true}
                   placeholderName={t("Country")}
                   value={state?.Country}
@@ -4911,7 +4910,7 @@ const PatientRegistration = () => {
                   lable={t("State")}
                   id="State"
                   removeIsClearable={true}
-                  // isDisabled={throughMobileData || throughMemberData}
+                
                   placeholderName={t("State")}
                   value={state?.State}
                   className="required-fields"
@@ -4934,7 +4933,7 @@ const PatientRegistration = () => {
                   lable={t("City")}
                   id="City"
                   removeIsClearable={true}
-                 //  isDisabled={throughMobileData || throughMemberData}
+               
                   placeholderName={t("City")}
                   className="required-fields"
                   isDisabled={!state?.State}

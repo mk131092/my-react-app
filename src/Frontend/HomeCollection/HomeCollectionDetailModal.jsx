@@ -368,7 +368,7 @@ const HomeCollectionDetailModal = ({
           </div>
         </div>
         <div className="row mt-1">
-          <div className="col-sm-2">
+          <div className="col-sm-4">
             <Input
               type="text"
               lable={t("Address")}
