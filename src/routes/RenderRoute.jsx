@@ -1654,6 +1654,14 @@ const allRoutes = {
       ),
       exact: true,
     },
+    { 
+      layout: Layout,
+      path: "/asianpatientsearch",
+      component: lazy(
+        () => import("../Frontend/Laboratory/AsianPatientSearch.jsx")
+      ),
+      exact: true,
+    },
     // Emergency module End
   ],
 };

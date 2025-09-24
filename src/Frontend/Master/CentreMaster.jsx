@@ -148,6 +148,7 @@ const CentreMaster = () => {
     IsAutoPRDM: state?.data?.IsAutoPRDM ? state?.data?.IsAutoPRDM : 0,
     BillCode: state?.data?.BillCode ? state?.data?.BillCode : "",
     IsPatientFullPaid: state?.data?.IsPatientFullPaid ? state?.data?.IsPatientFullPaid : 0,
+     IsB2B: state?.data?.IsB2B ? state?.data?.IsB2B : 0,
   });
 
   console.log('formData?.IsPatientFullPaid',formData?.IsPatientFullPaid );
@@ -719,6 +720,7 @@ const CentreMaster = () => {
                 // BillCode: formData?.BillCode,
                 BillCode: formData?.CentreType === "Processing Lab" ? formData?.BillCode : "",
                 IsPatientFullPaid: formData?.IsPatientFullPaid || 0,
+                IsB2B: formData?.IsB2B || 0,
               })
             )
             .then((res) => {
@@ -1614,6 +1616,19 @@ const CentreMaster = () => {
                   {t("IsAutoPRDM")}
                 </label>
               </div>
+               <div className="col-sm-1 col-md-1 col-xl-1">
+                <input
+                  type="checkbox"
+                  name="IsB2B"
+                  id="IsB2B"
+                
+                  onChange={handleChange}
+                  checked={formData?.IsB2B}
+                />
+                <label className="control-label ml-2" htmlFor="IsB2B">
+                  {t("IsB2B")}
+                </label>
+              </div>
               <div className="col-sm-1 col-md-2 col-xl-2">
                 <input
                   type="checkbox"
@@ -1626,6 +1641,7 @@ const CentreMaster = () => {
                   {t("IsPatientFullPaid")}
                 </label>
               </div>
+             
             </>
           )}
           {/* {name === "Rate" && (

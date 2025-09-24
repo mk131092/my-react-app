@@ -3529,7 +3529,7 @@ const PatientRegistration = () => {
   const handleSubmitApi = () => {
     let isBankSelect = true;
     RcData?.map((data) => {
-      if (!data.BankName && !["Cash", "Paytm"].includes(data?.PaymentMode)) {
+      if (!data.BankName && !["Cash", "Paytm","Credit"].includes(data?.PaymentMode)) {
         toast.error("Bank name is required.");
         isBankSelect = false;
         return;

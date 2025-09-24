@@ -10,12 +10,15 @@ import Medical from ".././Images/Medical.png";
 import file from ".././Images/file.png";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/loader/Loading";
+import { Dialog } from "primereact/dialog";
+import { useLocalStorage } from "../../utils/hooks/useLocalStorage";
 
 import Urgent from ".././Images/urgent.gif";
 import SpinnerLoad from "../../components/loader/SpinnerLoad";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import UpdateRemark from "../utils/UpdateRemark";
+import AsianPatientSearch from "../Laboratory/AsianPatientSearch";
 function DispatchTable({
   TableData,
   dispatchData,
@@ -26,7 +29,11 @@ function DispatchTable({
   Status,
 }) {
   const [modal, setModal] = useState(false);
+  const [uhidShow, setUHIDShow] = useState(false);
   const [visitID, setVisitID] = useState();
+  const [selectedUHID, setSelectedUHID] = useState("");
+  const theme = useLocalStorage("theme", "get");
+  const isMobile = window.innerWidth <= 768;
   const [printLoading, setPrintLoading] = useState({
     With: false,
     Without: false,
@@ -151,6 +158,12 @@ function DispatchTable({
   const hideButton = () => {
     const val = dispatchData?.filter((ele) => ele?.IsCourier == 1);
     return val.length > 0 ? true : false;
+  };
+
+  const handleUHIDClick = (patientData) => {
+    console.log("Clicked UHID:", patientData.PatientCode);
+    setSelectedUHID(patientData?.PatientCode || ""); 
+    setUHIDShow(true);
   };
 
   const handleCheck = (data) => {
@@ -393,7 +406,14 @@ function DispatchTable({
                               )}
                             </div>
                           )}
-                          {col.header === "UHID" && data?.PatientCode}
+                          {col.header === "UHID" && (
+                            <div
+                              style={{ cursor: "pointer", color: "blue", textDecoration: "underline"  }}
+                              onClick={() => handleUHIDClick(data)}
+                            >
+                              {data?.PatientCode}
+                            </div>
+                          )}
                           {col?.header === "Dept.Category" && data?.Category}
                           {col?.header === "VisitType" && data?.VisitType}
                           {col.header === "Centre" && data?.Centre}
@@ -458,6 +478,19 @@ function DispatchTable({
           visitID={visitID}
           onHide={() => setModal(false)}
         />
+      )}
+      {uhidShow && (
+        <Dialog
+          style={{
+            width: isMobile ? "80vw" : "60vw",
+          }}
+          onHide={() => setUHIDShow(false)}
+          width="50vw"
+          header={t("Asian Paint Search")}
+          className={theme}
+          visible={uhidShow}>
+            <AsianPatientSearch selectedUHID={selectedUHID}/>
+        </Dialog>
       )}
     </>
   );
