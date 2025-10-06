@@ -1405,7 +1405,7 @@ const HCEditModal = ({
                             <tr key={index}>
                               <td data-title="S.No">
                                 {index + 1}&nbsp;
-                                <button
+                              {/*  <button
                                   className="btn btn-danger btn-sm"
                                   onClick={() => {
                                     handleFilter(ele);
@@ -1413,6 +1413,7 @@ const HCEditModal = ({
                                 >
                                   X
                                 </button>
+                                 */}
                               </td>
 
                               <td data-title={t("SampleCode")}>

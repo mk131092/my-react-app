@@ -334,7 +334,7 @@ const PhelebotomistRegisteration = () => {
         DucumentType: formData?.DocumentType ? formData?.DocumentType : "",
         UserName: formData?.UserName.trim(),
         Password: formData?.Password.trim(),
-        EmployeeID: formData?.EmployeeID?.trim() || ""
+        EmployeeID: formData?.EmployeeID?.toString().trim() || ""
       };
       delete updatedFormData["DocumentNo"];
       delete updatedFormData["DocumentType"];
@@ -720,7 +720,7 @@ const PhelebotomistRegisteration = () => {
           LogoutTime: details[0]?.LogoutTime,
           StateId: getStatecity("state", details),
           CityId: getStatecity("city", details),
-          EmployeeID: rowData?.EmployeeID,
+          EmployeeID: rowData?.EmployeeID.toString() || "",
         };
         setFormData(details2);
         fetchCities(details2?.StateId);
@@ -1483,7 +1483,7 @@ const PhelebotomistRegisteration = () => {
                   CityId: "",
                   P_Pincode: "",
                   P_City: "",
-                  EmployeeID:''
+                  EmployeeID:""
                 });
                 setErros({});
               }}
