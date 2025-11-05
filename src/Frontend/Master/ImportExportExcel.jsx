@@ -78,8 +78,14 @@ const ImportExportExcel = () => {
 
   const handleSaveToDatabase = (url) => {
     setLoad(true);
+    const rateTypeShare = ExcelPreview?.exportJSON.map((data) => ({
+      DepartmentID: data.DepartmentID,
+      InvestigationID: data.InvestigationID,
+      ShareAmount: String(Math.floor(Number(data.ShareAmount || 0))),
+      SharePer: String(Math.floor(Number(data.SharePer || 0))),
+    }))
     axiosInstance
-      .post(url, ExcelPreview?.exportJSON)
+      .post(`${url}?RteTypeId=${payload.CentreId}`, rateTypeShare)
       .then((res) => {
         if (res?.data?.success) {
           toast.success(res?.data?.message);
@@ -121,7 +127,19 @@ const ImportExportExcel = () => {
       .post("CommonController/DownloadRateList", payload)
       .then((res) => {
         setLoad(false);
-        setExportExcel(res?.data?.message);
+
+      const data = res?.data;
+      const { success, message } = data || {};
+      if(success) {
+        setExportExcel(Array.isArray(message) ? message : []);
+      } else {
+        if (typeof message === "string" && message.toLowerCase().includes("no records")) {
+          toast.error("No records found");
+        } else {
+          toast.error(message || "Something went wrong");
+        }
+        setExportExcel([]);
+      }
       })
       .catch((err) => {
         setLoad(false);

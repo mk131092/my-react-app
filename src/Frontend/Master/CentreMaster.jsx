@@ -27,6 +27,7 @@ import {
   SkipTimeType,
   GraceTime,
   PaymentMode,
+  BussinessTypeMode
 } from "../../utils/Constants";
 import { toast } from "react-toastify";
 import Loading from "../../components/loader/Loading";
@@ -149,6 +150,7 @@ const CentreMaster = () => {
     BillCode: state?.data?.BillCode ? state?.data?.BillCode : "",
     IsPatientFullPaid: state?.data?.IsPatientFullPaid ? state?.data?.IsPatientFullPaid : 0,
      IsB2B: state?.data?.IsB2B ? state?.data?.IsB2B : 0,
+    BussinessType: state?.data?.BussinessType ? state?.data?.BussinessType : "",
   });
 
   console.log('formData?.IsPatientFullPaid',formData?.IsPatientFullPaid );
@@ -271,6 +273,9 @@ const CentreMaster = () => {
         skipValue: state?.data?.skipValue ? state?.data?.skipValue : "",
         isAutoEmail: state?.data?.isAutoEmail ? state?.data?.isAutoEmail : 0,
         BillCode: state?.data?.BillCode ? state?.data?.BillCode : "",
+        BussinessType: state?.data?.BussinessType
+          ? state?.data?.BussinessType
+          : "Cash",
       });
     } else if (name === "Rate") {
       setFormData({
@@ -409,6 +414,9 @@ const CentreMaster = () => {
           : "",
         skipValue: state?.data?.skipValue ? state?.data?.skipValue : "",
         IsAutoPRDM: state?.data?.IsAutoPRDM ? state?.data?.IsAutoPRDM : 0,
+        BussinessType: state?.data?.BussinessType
+          ? state?.data?.BussinessType
+          : "Cash",
       });
     }
   }, [name]);
@@ -1799,6 +1807,18 @@ const CentreMaster = () => {
                 />
               </div>
             )}
+
+             <div className="col-sm-2 col-md-2 ">
+                <SelectBox
+                  options={BussinessTypeMode}
+                  name="BussinessType"
+                  id="BussinessType"
+                  lable="BussinessType"
+                  selectedValue={formData?.BussinessType}
+                  onChange={handleSelectChange}
+                  isDisabled={state?.data ? true : false}
+                />
+              </div>
 
           {/* {name === "Rate" && formData?.PaymentMode == "Credit" && (
             <>

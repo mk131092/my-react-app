@@ -144,7 +144,7 @@ function RegisterationTable({
         <i className="fa fa-home" />
       </td>
       <td data-title={t("MRP")}>
-        {state?.HideAmount == 1 ? "" : Number(data?.SetMRP).toFixed(2)}
+        {Number(data?.SetMRP).toFixed(2)}
       </td>
       <td data-title={t("Rate")}>{state?.HideAmount == 1 ? "" : data?.Rate}</td>
       <td data-title={t("Discount")}>

@@ -7,6 +7,7 @@ import { useLocalStorage } from "../../utils/hooks/useLocalStorage";
 import { useTranslation } from "react-i18next";
 const ReceiptReprintFilter = ({ columnConfig, setColumnConfig, PageName }) => {
   const [show, setShow] = useState(false);
+  const DesignationId = useLocalStorage("userData", "get")?.DesignationId;
   const cardRef = useRef(null);
   const buttonRef = useRef(null);
   const [load, setLoad] = useState(false);

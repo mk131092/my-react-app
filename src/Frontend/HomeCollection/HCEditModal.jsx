@@ -1343,6 +1343,7 @@ const HCEditModal = ({
                   className="required-fields"
                   onInput={SearchTest}
                   type="text"
+                 readOnly={true} 
                   onChange={handleChange}
                   value={bookingData.TestName}
                   onKeyDown={handleIndex}

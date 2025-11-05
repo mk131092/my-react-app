@@ -28,9 +28,20 @@ const AsianPatientSearch = ({ selectedUHID }) => {
             "Lab/PatientReport",
             { ReportNumber: reportNumber }
         ).then((res) => {
-            const fileUrl = res?.data?.url;
+           // const fileUrl = res?.data?.url;
             // Open in a new browser tab
-            window.open(fileUrl, "_blank");
+         
+
+           let fileUrl = res?.data?.url;
+        const randomNumber = Math.floor(Math.random() * 1000000); // generate random number
+
+        // Check if the URL already has a query string
+        if (fileUrl.includes("?")) {
+            fileUrl += `&rnd=${randomNumber}`;
+        } else {
+            fileUrl += `?rnd=${randomNumber}`;
+        }
+           window.open(fileUrl, "_blank");
 
         })
         .catch((err) => {

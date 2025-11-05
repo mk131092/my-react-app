@@ -278,6 +278,16 @@ const DoAppointmentModal = ({
     }
   };
 
+  useEffect(() => {
+  if (appointData?.isPaid) {
+    setAppointData((prev) => ({
+      ...prev,
+      isPaid: 0,
+      PaidAmt: "0",
+    }));
+  }
+}, [discountamount, disAmt]);
+
   const isPaidTotalAmount = (isSum) => {
     setAppointData((prev) => ({ ...prev, PaidAmt: isSum ? (net - discountamount) : "0" }));
     if (!isSum) {
@@ -325,10 +335,12 @@ const DoAppointmentModal = ({
       )
     );
     setDiscountAmount(
-      tableData.reduce(
-        (accumulator, currentValue) =>
-          Number(accumulator) + Number(currentValue.DiscAmt),
-        0
+      Math.round(
+        tableData.reduce(
+          (accumulator, currentValue) =>
+            Number(accumulator) + Number(currentValue.DiscAmt || 0),
+          0
+        )
       )
     );
     if (!coupon?.field) {
@@ -341,13 +353,13 @@ const DoAppointmentModal = ({
 
   useEffect(() => {
     // setDiscount(Number(net) - Number(disAmt));
-    setDiscountAmount(disAmt);
+    setDiscountAmount(Math.round(Number(disAmt)));
   }, [disAmt]);
 
   useEffect(() => {
     if (!isNaN(net) && !isNaN(discountPercentage)) {
       const discountAmount = (discountPercentage / 100) * net;
-      setDiscountAmount(discountAmount);
+      setDiscountAmount(Math.round(discountAmount));
       // setDiscount(Number(net) - Number(discountAmount));
     }
   }, [discountPercentage]);
@@ -532,18 +544,18 @@ const DoAppointmentModal = ({
         House_No: testData?.House_No.trim(),
         MRP: Number(ele?.MRP),
         Rate: Number(ele?.Rate),
-        DiscAmt:
+        DiscAmt: Math.round(
           coupon?.field && coupon?.type == 2
             ? Number(ele?.DiscAmt)
             : tableData?.length > 1
               ? Number((Number(ele?.Rate) - Number(NetAmount)).toFixed(2))
-              : Number(discountamount),
-        NetAmt:
+              : Number(discountamount)),
+        NetAmt: Math.round(
           coupon?.field && coupon?.type == 2
             ? Number(ele?.NetAmt)
             : tableData?.length > 1
               ? Number(NetAmount)
-              : Number(net) - Number(discountamount),
+              : Number(net) - Number(discountamount)),
         isUrgent: ele?.isUrgent ? 1 : 0,
         VIP: testData?.VIP ? 1 : 0,
         Panel_ID: Number(rateType?.value),
@@ -1594,7 +1606,7 @@ const DoAppointmentModal = ({
                       style={{ textAlign: "center", fontWeight: "bold" }}
                     >
                       Discount Amt :&nbsp;
-                      {Number(discountamount).toFixed(2)}
+                      {Number(discountamount)}
                     </div>
                   </div>
 
@@ -1843,7 +1855,7 @@ const DoAppointmentModal = ({
                         lable="Amount To Pay"
                         name="Total_Amount"
                         disabled={true}
-                        value={Number(net - discountamount).toFixed(2)}
+                        value={Number(net - discountamount)}
                         type="text"
                         readOnly="readonly"
                       />

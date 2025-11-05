@@ -99,6 +99,7 @@ const LoginComponent = () => {
         isOpen: false,
       });
       const userData = {
+        HideRate : user.user.HideRate ? user.user.HideRate : 0,
         ModifyRegDate: user.user.ModifiedRegDate,
         Username: user.user.Username,
         DefaultCentre: user.user.DefaultCentreID,

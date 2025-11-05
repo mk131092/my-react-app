@@ -17,6 +17,8 @@ import SpinnerLoad from "../../components/loader/SpinnerLoad";
 import UpdateRemark from "../utils/UpdateRemark";
 import { useLocalStorage } from "../../utils/hooks/useLocalStorage";
 import { useTranslation } from "react-i18next";
+ const DesignationId = useLocalStorage("userData", "get")?.DesignationId;
+  
 const ReceiptReprintTable = ({
   receiptData,
   TableData,
@@ -309,6 +311,7 @@ const ReceiptReprintTable = ({
                                 {" "}
                                 {index + 1 + IndexHandle(currentPage, pageSize)}
                               </span>
+                              {DesignationId !== 244275 && (
                               <span title="More Actions">
                                 <SeeMoreIconInTable
                                   receiptData={data}
@@ -323,6 +326,7 @@ const ReceiptReprintTable = ({
                                   DesignationName={DesignationName}
                                 />
                               </span>
+                                )}
                             </div>
                           )}
                           {col.header === "Reg Date" && (

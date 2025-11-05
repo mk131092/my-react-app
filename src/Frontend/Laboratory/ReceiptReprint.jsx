@@ -61,7 +61,8 @@ const ReceiptReprint = () => {
   //   { header: "UploadDocument", visible: true, icon: "fa-file" },
   //   { header: "Medical History", visible: true, icon: "fa-medkit" },
   // ];
-  const [columnConfig, setColumnConfig] = useState([]);
+   const DesignationId = useLocalStorage("userData", "get")?.DesignationId;
+     const [columnConfig, setColumnConfig] = useState([]);
   const [RateTypes, setRateTypes] = useState([]);
   const [CentreData, setCentreData] = useState([]);
   const [user, SetUser] = useState([]);
@@ -358,7 +359,9 @@ const ReceiptReprint = () => {
         defaultValue={true}
         isBreadcrumb={true}
         linkTo="/receiptreprint"
-        linkTitle={
+        linkTitle={ 
+        <>
+          {DesignationId !== 244275 && (
           <div
             className="link-title-container mt-2 d-none  d-md-flex"
             id="pr_id_11"
@@ -435,6 +438,8 @@ const ReceiptReprint = () => {
               </span>
             </label>
           </div>
+           )}
+          </>
         }
       >
         <Accordion defaultValue={true} title={t("Receipt Reprint Details")} />
@@ -712,6 +717,8 @@ const ReceiptReprint = () => {
                   {" "}
                   {t("Click Icon To Filter Results")}{" "}
                 </span>
+                 {/* Hide filter if DesignationId == 202 */}
+          {DesignationId !== 244275 && (
                 <span className="header ml-1" style={{ cursor: "pointer" }}>
                   <ReceiptReprintFilter
                     columnConfig={columnConfig}
@@ -719,6 +726,7 @@ const ReceiptReprint = () => {
                     PageName="Reprint"
                   />
                 </span>
+                )}
               </div>
             )}
           </>

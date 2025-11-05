@@ -126,6 +126,7 @@ const PatientRegistration = () => {
     Type: "",
   });
   const [showOP, setShowOP] = useState(false);
+  const [totalMRP, setTotalMRP] = useState(0);
   const [tableData, setTableData] = useState([]);
   const [indexMatch, setIndexMatch] = useState(0);
   const [show2, setShow2] = useState(false);
@@ -178,6 +179,9 @@ const PatientRegistration = () => {
   });
 
   const [Category, setCategory] = useState([]);
+  const hideRate = useLocalStorage("userData", "get")?.HideRate;
+  const ModifiedSampleDate = useLocalStorage("userData", "get").ModifiedSampleDate;
+
   const [time, setTime] = useState({
     Hour: new Date().getHours().toString().padStart(2, "0"),
     Minute: new Date().getMinutes().toString().padStart(2, "0"),
@@ -229,6 +233,18 @@ const PatientRegistration = () => {
   useEffect(() => {
     if (coupon?.field) setErr({});
   }, [coupon?.field]);
+
+  useEffect(() => {
+    if (Array.isArray(tableData) && tableData.length > 0) {
+      const total = tableData.reduce(
+        (sum, row) => sum + parseFloat(row.SetMRP || 0),
+        0
+      );
+      setTotalMRP(total);
+    } else {
+      setTotalMRP(0);
+    }
+  }, [tableData]);
 
   const [couponData, setCouponData] = useState([]);
   const [err, setErr] = useState({});
@@ -5631,7 +5647,9 @@ const PatientRegistration = () => {
                   name="Total_Amount"
                   disabled={true}
                   type="text"
-                  value={Number(LTData?.NetAmount).toFixed(2)}
+                  value={
+                    hideRate === 1 ? "" : Number(LTData?.NetAmount).toFixed(2)
+                  }
                   readOnly="readonly"
                 />
               </div>
@@ -5934,6 +5952,12 @@ const PatientRegistration = () => {
                   onChange={handleSelectChange}
                 />
               </div>
+              <div className="col-sm-3 col-6">
+                <label>
+                  {t("MRP Gross Amount")}:{" "}
+                  {Number(totalMRP.toFixed(2))}
+                </label>
+              </div>
 
               {Number(LTData?.CashRendering) - Number(LTData?.NetAmount) > 0 ? (
                 <div className="col-sm-3 col-6">
@@ -6157,13 +6181,15 @@ const PatientRegistration = () => {
               {state?.HideAmount != 1 && (
                 <label className="col-sm-3 col-4 order-1 order-sm-2">
                   {t("Due Amount")}:{" "}
-                  {Number(LTData?.NetAmount - paid).toFixed(2)}
+                  {hideRate != 1
+                    ? Number(LTData?.NetAmount - paid).toFixed(2)
+                    : ""}
                 </label>
               )}
               {state?.HideAmount != 1 && (
                 <label className="col-sm-4 col-4 order-2 order-sm-3">
                   {t("Total Discount Amount")}:{" "}
-                  {LTData?.DiscountOnTotal
+                  {hideRate != 1 && LTData?.DiscountOnTotal
                     ? parseFloat(LTData?.DiscountOnTotal).toFixed(2)
                     : " 0"}
                 </label>

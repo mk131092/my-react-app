@@ -379,6 +379,18 @@ export const PaymentMode = [
     value: "Credit",
   },
 ];
+
+export const BussinessTypeMode = [
+  {
+    label: "Cash",
+    value: "Cash",
+  },
+  {
+    label: "Credit",
+    value: "Credit",
+  },
+];
+
 export const DataType = [
   {
     label: "All",

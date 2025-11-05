@@ -758,7 +758,7 @@ const AppointmentModal = ({
     const labels = state.filter((ele, _) => {
       return ele.value == id;
     });
-    return labels[0].label;
+    return labels[0]?.label;
   };
   const getBindRoute = (value) => {
     axios
